@@ -1,0 +1,12 @@
+require open coq.sttfa;
+require coq.connectives;
+require coq.logic;
+symbol reflexive : Els (∀ₖ (λ A, ↑ ((A ⇝ A ⇝ prop) ⇝ prop))) ≔ in-∀ₖ (λ A, abs (λ R : El ((A ⇝ A ⇝ prop)), ∀ (λ x : El (A), app (app (R) x ■) x ■)));
+symbol transitive : Els (∀ₖ (λ A, ↑ ((A ⇝ A ⇝ prop) ⇝ prop))) ≔ in-∀ₖ (λ A, abs (λ R : El ((A ⇝ A ⇝ prop)), ∀ (λ x : El (A), ∀ (λ y : El (A), ∀ (λ z : El (A), (app (app (R) x ■) y ■) ⇒ (app (app (R) y ■) z ■) ⇒ app (app (R) x ■) z ■)))));
+symbol RC : Els (∀ₖ (λ A, ↑ ((A ⇝ A ⇝ prop) ⇝ A ⇝ A ⇝ prop))) ≔ in-∀ₖ (λ A, abs (λ R : El ((A ⇝ A ⇝ prop)), abs (λ x : El (A), abs (λ y : El (A), app (app (coq.connectives.Or) (app (app (R) x ■) y ■) ■) (app (app (el-∀ₖ (coq.logic.eq) (A) ■) x ■) y ■) ■))));
+symbol RC_reflexive : Prf (∀ₚ (λ A, ∀ (λ R : El ((A ⇝ A ⇝ prop)), app (el-∀ₖ (reflexive) (A) ■) (app (el-∀ₖ (RC) (A) ■) R ■) ■))) ≔ in-∀ₚ (λ A, in-∀ (λ R : El (A ⇝ A ⇝ prop),  in-∀ (λ x : El (A),  el-⇒ (el-∀ (el-∀ (coq.connectives.or_intror) (app (app (R) x ■) x ■) ■) (app (app (el-∀ₖ (coq.logic.eq) (A) ■) x ■) x ■) ■) (el-∀ (el-∀ₚ (coq.logic.refl) (A) ■) (x) ■) ■)));
+symbol injective_ : Els (∀ₖ (λ A, ∀ₖ (λ B, ↑ ((A ⇝ B) ⇝ prop)))) ≔ in-∀ₖ (λ A, in-∀ₖ (λ B, abs (λ f : El ((A ⇝ B)), ∀ (λ x : El (A), ∀ (λ y : El (A), (app (app (el-∀ₖ (coq.logic.eq) (B) ■) (app (f) x ■) ■) (app (f) y ■) ■) ⇒ app (app (el-∀ₖ (coq.logic.eq) (A) ■) x ■) y ■)))));
+symbol commutative_ : Els (∀ₖ (λ A, ↑ ((A ⇝ A ⇝ A) ⇝ prop))) ≔ in-∀ₖ (λ A, abs (λ f : El ((A ⇝ A ⇝ A)), ∀ (λ x : El (A), ∀ (λ y : El (A), app (app (el-∀ₖ (coq.logic.eq) (A) ■) (app (app (f) x ■) y ■) ■) (app (app (f) y ■) x ■) ■))));
+symbol associative_ : Els (∀ₖ (λ A, ↑ ((A ⇝ A ⇝ A) ⇝ prop))) ≔ in-∀ₖ (λ A, abs (λ f : El ((A ⇝ A ⇝ A)), ∀ (λ x : El (A), ∀ (λ y : El (A), ∀ (λ z : El (A), app (app (el-∀ₖ (coq.logic.eq) (A) ■) (app (app (f) (app (app (f) x ■) y ■) ■) z ■) ■) (app (app (f) x ■) (app (app (f) y ■) z ■) ■) ■)))));
+symbol monotonic : Els (∀ₖ (λ A, ↑ ((A ⇝ A ⇝ prop) ⇝ (A ⇝ A) ⇝ prop))) ≔ in-∀ₖ (λ A, abs (λ R : El ((A ⇝ A ⇝ prop)), abs (λ f : El ((A ⇝ A)), ∀ (λ x : El (A), ∀ (λ y : El (A), (app (app (R) x ■) y ■) ⇒ app (app (R) (app (f) x ■) ■) (app (f) y ■) ■)))));
+symbol distributive : Els (∀ₖ (λ A, ↑ ((A ⇝ A ⇝ A) ⇝ (A ⇝ A ⇝ A) ⇝ prop))) ≔ in-∀ₖ (λ A, abs (λ f : El ((A ⇝ A ⇝ A)), abs (λ g : El ((A ⇝ A ⇝ A)), ∀ (λ x : El (A), ∀ (λ y : El (A), ∀ (λ z : El (A), app (app (el-∀ₖ (coq.logic.eq) (A) ■) (app (app (f) x ■) (app (app (g) y ■) z ■) ■) ■) (app (app (g) (app (app (f) x ■) y ■) ■) (app (app (f) x ■) z ■) ■) ■))))));
