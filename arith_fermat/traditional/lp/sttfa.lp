@@ -1,0 +1,18 @@
+constant symbol {|type|} : TYPE;
+constant symbol arrow : {|type|} → {|type|} → {|type|};
+constant symbol bool : {|type|};
+symbol eta : {|type|} → TYPE;
+constant symbol ptype : TYPE;
+constant symbol p : {|type|} → ptype;
+symbol etap : ptype → TYPE;
+constant symbol forallK : ({|type|} → ptype) → ptype;
+symbol eps : eta bool → TYPE;
+constant symbol impl : eta bool → eta bool → eta bool;
+constant symbol forall : Π (t : {|type|}), (eta t → eta bool) → eta bool;
+constant symbol forallP : ({|type|} → eta bool) → eta bool;
+rule eta ↪ λ t, etap (p t);
+rule etap (p (arrow $l $r)) ↪ eta $l → eta $r;
+rule etap (forallK $f) ↪ Π (x : {|type|}), etap ($f x);
+rule eps (forall $t $f) ↪ Π (x : eta $t), eps ($f x);
+rule eps (impl $l $r) ↪ eps $l → eps $r;
+rule eps (forallP $f) ↪ Π (x : {|type|}), eps ($f x);
