@@ -1,0 +1,28 @@
+{|Type|} : Type.
+injective El : ({|Type|} -> Type).
+{|⇝|} : ({|Type|} -> ({|Type|} -> {|Type|})).
+{|λ'|} : (A : {|Type|} -> (B : {|Type|} -> (((El A) -> (El B)) -> (El ({|⇝|} A B))))).
+def {|▪|} : (A : {|Type|} -> (B : {|Type|} -> ((El ({|⇝|} A B)) -> ((El A) -> (El B))))).
+[0, 1, 2, 3, 4, 5] {|▪|} 0 1 ({|λ'|} 2 3 4) 5 --> (4 5).
+Scheme : Type.
+injective Els : (Scheme -> Type).
+{|↑|} : ({|Type|} -> Scheme).
+[0] Els ({|↑|} 0) --> (El 0).
+{|∀ₖ|} : (({|Type|} -> Scheme) -> Scheme).
+{|Λ|} : (A : ({|Type|} -> Scheme) -> ((x : {|Type|} -> (Els (A x))) -> (Els ({|∀ₖ|} A)))).
+def at : (A : ({|Type|} -> Scheme) -> ((Els ({|∀ₖ|} A)) -> (x : {|Type|} -> (Els (A x))))).
+[0, 1, 2, 3] at 0 ({|Λ|} 1 2) 3 --> (2 3).
+prop : {|Type|}.
+injective Prf : ((El prop) -> Type).
+{|⇒|} : ((El prop) -> ((El prop) -> (El prop))).
+{|in-⇒|} : (A : (El prop) -> (B : (El prop) -> (((Prf A) -> (Prf B)) -> (Prf ({|⇒|} A B))))).
+def {|el-⇒|} : (A : (El prop) -> (B : (El prop) -> ((Prf ({|⇒|} A B)) -> ((Prf A) -> (Prf B))))).
+[0, 1, 2, 3, 4, 5] {|el-⇒|} 0 1 ({|in-⇒|} 2 3 4) 5 --> (4 5).
+{|∀|} : (A : {|Type|} -> (((El A) -> (El prop)) -> (El prop))).
+{|in-∀|} : (A : {|Type|} -> (B : ((El A) -> (El prop)) -> ((x : (El A) -> (Prf (B x))) -> (Prf ({|∀|} A B))))).
+def {|el-∀|} : (A : {|Type|} -> (B : ((El A) -> (El prop)) -> ((Prf ({|∀|} A B)) -> (x : (El A) -> (Prf (B x)))))).
+[0, 1, 2, 3, 4, 5] {|el-∀|} 0 1 ({|in-∀|} 2 3 4) 5 --> (4 5).
+{|∀ₚ|} : (({|Type|} -> (El prop)) -> (El prop)).
+{|in-∀ₚ|} : (A : ({|Type|} -> (El prop)) -> ((x : {|Type|} -> (Prf (A x))) -> (Prf ({|∀ₚ|} A)))).
+def {|el-∀ₚ|} : (A : ({|Type|} -> (El prop)) -> ((Prf ({|∀ₚ|} A)) -> (x : {|Type|} -> (Prf (A x))))).
+[0, 1, 2, 3] {|el-∀ₚ|} 0 ({|in-∀ₚ|} 1 2) 3 --> (2 3).

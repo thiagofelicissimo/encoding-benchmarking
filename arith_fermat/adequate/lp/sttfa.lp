@@ -1,14 +1,13 @@
-constant symbol END : TYPE;
-constant symbol ■ : END;
-
 constant symbol Type : TYPE;
 injective symbol El : Type → TYPE;
 
 constant symbol ⇝ : Type → Type → Type;
 notation ⇝ infix right 7;
-constant symbol abs [A B : Type] : (El A → El B) → El (A ⇝ B);
-symbol app [A B : Type] :  El (A ⇝ B) → El A → END → El B;
-rule app (abs $M) $N _ ↪ $M $N;
+constant symbol λ' [A B : Type] : (El A → El B) → El (A ⇝ B);
+notation λ' quantifier;
+symbol ▪ [A B : Type] :  El (A ⇝ B) → El A → El B;
+notation ▪ infix left 7;
+rule (λ' $M) ▪ $N ↪ $M $N;
 
 constant symbol Scheme : TYPE;
 injective symbol Els : Scheme → TYPE;
@@ -17,9 +16,12 @@ constant symbol ↑ : Type → Scheme;
 rule Els (↑ $A) ↪ El $A;
 
 constant symbol ∀ₖ : (Type → Scheme) → Scheme;
-constant symbol in-∀ₖ [A : Type → Scheme] : (Π x : Type, Els (A x)) → Els (∀ₖ A);
-symbol el-∀ₖ [A : Type → Scheme] : Els (∀ₖ A) → Π x : Type, END → Els (A x);
-rule el-∀ₖ (in-∀ₖ $A) $x _ ↪ $A $x;
+notation ∀ₖ quantifier;
+constant symbol Λ [A : Type → Scheme] : (Π x : Type, Els (A x)) → Els (∀ₖ A);
+notation Λ quantifier;
+symbol at [A : Type → Scheme] : Els (∀ₖ A) → Π x : Type, Els (A x);
+notation at infix left 7;
+rule (Λ $A) at $T ↪ $A $T;
 
 constant symbol prop : Type;
 injective symbol Prf : El prop → TYPE;
@@ -27,18 +29,20 @@ injective symbol Prf : El prop → TYPE;
 constant symbol ⇒ : El prop → El prop → El prop;
 notation ⇒ infix right 7;
 constant symbol in-⇒ [A B : El prop] : (Prf A → Prf B) → Prf (A ⇒ B);
-symbol el-⇒ [A B : El prop] :  Prf (A ⇒ B) → Prf A → END → Prf B;
-rule el-⇒ (in-⇒ $M) $N _ ↪ $M $N;
+symbol el-⇒ [A B : El prop] :  Prf (A ⇒ B) → Prf A → Prf B;
+rule el-⇒ (in-⇒ $M) $N ↪ $M $N;
 
-constant symbol ∀ [A : Type] : (El A → El prop) → El prop;
+constant symbol ∀ : Π [A : Type], (El A → El prop) → El prop;
+notation ∀ quantifier;
 constant symbol in-∀ [A : Type] [B : El A → El prop] : (Π x : El A, Prf (B x)) → Prf (∀ B);
-symbol el-∀ [A : Type] [B : El A → El prop] : Prf (∀ B) → Π x : El A, END → Prf (B x);
-rule el-∀ (in-∀ $P) $x _ ↪ $P $x;
+symbol el-∀ [A : Type] [B : El A → El prop] : Prf (∀ B) → Π x : El A, Prf (B x);
+rule el-∀ (in-∀ $P) $x ↪ $P $x;
 
 constant symbol ∀ₚ : (Type → El prop) → El prop;
+notation ∀ₚ quantifier;
 constant symbol in-∀ₚ [A : Type → El prop] : (Π x : Type, Prf (A x)) → Prf (∀ₚ A);
-symbol el-∀ₚ [A : Type → El prop] : Prf (∀ₚ A) → Π x : Type, END → Prf (A x);
-rule el-∀ₚ (in-∀ₚ $P) $x _ ↪ $P $x;
+symbol el-∀ₚ [A : Type → El prop] : Prf (∀ₚ A) → Π x : Type, Prf (A x);
+rule el-∀ₚ (in-∀ₚ $P) $x ↪ $P $x;
 
 
 
